@@ -1,0 +1,32 @@
+[package]
+name = "cranberrycity"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+egui = "0.27.0"
+libc = "0.2"
+image = { version = "0.25", features = ["bmp", "png"] }
+shroud = { version = "0.2.2", features = ["directx9"] }
+retour = { version = "0.4.0-alpha.2", features = ["static-detour"] }
+egui-d3d9 = { path = "./egui-d3d9" }
+
+[dependencies.egui_extras]
+version = "0.27.0"
+features = ["image", "all_loaders"]
+
+[dependencies.windows]
+version = "0.54.0"
+features = [
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Graphics_Dxgi_Common",
+    "Win32_Graphics_Direct3D9",
+    "Win32_Graphics_Dxgi",
+    "Win32_Graphics_Gdi",
+    "Win32_System_Console",
+    "Win32_Foundation",
+    "Win32_System_LibraryLoader",
+]
