@@ -1,7 +1,9 @@
+mod ui;
+
 use egui_d3d9::EguiDx9;
 use retour::static_detour;
 
-use egui::{Context, FontData, FontDefinitions, FontFamily, FontTweak, RichText};
+
 use std::{intrinsics::transmute, sync::Once};
 use windows::{
     core::{s, HRESULT, PCSTR},
@@ -58,7 +60,7 @@ fn hk_present(
         INIT.call_once(|| {
             let window = FindWindowA(PCSTR(std::ptr::null()), s!("Audiosurf"));
 
-            APP = Some(EguiDx9::init(&dev, window, ui, 0, true));
+            APP = Some(EguiDx9::init(&dev, window, ui::ui_main, 0, true));
 
             OLD_WND_PROC = Some(transmute(SetWindowLongPtrA(
                 window,
@@ -93,30 +95,6 @@ unsafe extern "stdcall" fn hk_wnd_proc(
     APP.as_mut().unwrap().wnd_proc(msg, wparam, lparam);
 
     CallWindowProcW(OLD_WND_PROC.unwrap(), hwnd, msg, wparam, lparam)
-}
-
-fn ui(ctx: &Context, _i: &mut i32) {
-    static ONCE: Once = Once::new();
-
-    ONCE.call_once(|| {
-        let mut fonts = FontDefinitions::default();
-        let tweak = FontTweak::default();
-        fonts.font_data.insert(
-            "inter".to_owned(),
-            FontData::from_static(include_bytes!("../res/Inter-Regular.ttf")).tweak(tweak),
-        );
-        fonts
-            .families
-            .get_mut(&FontFamily::Proportional)
-            .unwrap()
-            .insert(0, "inter".to_owned());
-        ctx.set_fonts(fonts);
-        // egui_extras::install_image_loaders(ctx);
-    });
-
-    egui::containers::Window::new("Cranberry City").show(ctx, |ui| {
-        ui.label(RichText::new("at least it's not Quest3DTamperer™").italics());
-    });
 }
 
 #[allow(unused_must_use)]
