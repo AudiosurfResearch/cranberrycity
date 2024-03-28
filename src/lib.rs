@@ -1,4 +1,5 @@
 mod ui;
+mod q3d_bindings;
 
 use std::{intrinsics::transmute, sync::Once};
 
