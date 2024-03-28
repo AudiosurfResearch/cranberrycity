@@ -1,10 +1,9 @@
 mod ui;
 
+use std::{intrinsics::transmute, sync::Once};
+
 use egui_d3d9::EguiDx9;
 use retour::static_detour;
-
-
-use std::{intrinsics::transmute, sync::Once};
 use windows::{
     core::{s, HRESULT, PCSTR},
     Win32::{
